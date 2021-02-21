@@ -1,0 +1,25 @@
+
+SQL SERVER
+------------------------------------------------
+
+- SQL Server 
+  - Version 2008 o posterior
+  - Recomendar: 2019
+
+- SSMS (Herramienta cliente)
+
+- ERWin
+
+
+OBJETIVO DEL CURSO
+--------------------------------------------------
+1.- Implementar una base de datos
+2.- Restricciones
+3.- Consultas
+
+
+EVALUACION
+-------------------------------------------------
+1.- 4 practicas calificadas
+2.- Se promedian las 3 mejores practicas 
+3.- 1 examen final
