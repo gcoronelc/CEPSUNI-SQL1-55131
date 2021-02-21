@@ -4,7 +4,7 @@
 
 ## DATOS DEL CURSO
 
-- Lugar: CEPS-UNI
+- Lugar: CEPS-UNI - LIMA - PERU
 - Horario: DOMINGOS DE 12 - 16 Horas
 - Inicio: 21-FEB-2021
 - Duración: 24 Horas
