@@ -1,0 +1,295 @@
+-- Creación de la Base de Datos
+
+USE master;
+GO
+
+IF EXISTS (SELECT NAME FROM master.sys.databases WHERE NAME ='TECNOHOME')
+   DROP DATABASE TECNOHOME;
+GO
+
+CREATE DATABASE TECNOHOME;
+GO
+
+-- Creación de Tablas en Base de Datos
+
+USE TECNOHOME;
+GO
+
+
+
+CREATE TABLE PRODUCTOS
+( 
+	CódigoProducto       integer IDENTITY ( 1,1 ) ,
+	Descripción          varchar(100)  NOT NULL ,
+	Categoría            varchar(100)  NOT NULL ,
+	Precio               money  NOT NULL ,
+	CONSTRAINT XPKPRODUCTOS PRIMARY KEY (CódigoProducto ASC)
+)
+go
+
+
+
+CREATE TABLE Almacen
+( 
+	Idalmacén            integer IDENTITY ( 1,1 ) ,
+	Distrito             varchar(100)  NOT NULL ,
+	CONSTRAINT XPKAlmacen PRIMARY KEY (Idalmacén ASC)
+)
+go
+
+
+
+CREATE TABLE TIENDAS
+( 
+	Idtienda             integer IDENTITY ( 1,1 ) ,
+	Departamento         varchar(100)  NOT NULL ,
+	Provincia            varchar(20)  NOT NULL ,
+	Distrito             varchar(100)  NOT NULL ,
+	CONSTRAINT XPKTIENDAS PRIMARY KEY (Idtienda ASC)
+)
+go
+
+
+
+CREATE TABLE INVENTARIOTIENDA
+( 
+	CódigoInventario     integer IDENTITY ( 1,1 ) ,
+	Idtienda             integer  NOT NULL ,
+	CódigoProducto       integer  NOT NULL ,
+	Idalmacén            integer  NOT NULL ,
+	Unidades             integer  NOT NULL ,
+	Fecha_ult_ingreso    datetime  NOT NULL ,
+	CONSTRAINT XPKINVENTARIOTIENDA PRIMARY KEY (CódigoInventario ASC),
+	CONSTRAINT FK_InventarioTienda_Productos FOREIGN KEY (CódigoProducto) REFERENCES PRODUCTOS(CódigoProducto)
+		ON DELETE NO ACTION
+		ON UPDATE NO ACTION,
+CONSTRAINT FK_InventarioTienda_Almacen FOREIGN KEY (Idalmacén) REFERENCES Almacen(Idalmacén)
+		ON DELETE NO ACTION
+		ON UPDATE NO ACTION,
+CONSTRAINT FK_InventarioTienda_Tiendas FOREIGN KEY (Idtienda) REFERENCES TIENDAS(Idtienda)
+		ON DELETE NO ACTION
+		ON UPDATE NO ACTION
+)
+go
+
+
+
+CREATE TABLE CLIENTES
+( 
+	DNI                  varchar(20)  NOT NULL ,
+	Nombres              varchar(100)  NOT NULL ,
+	Apellidos            varchar(100)  NOT NULL ,
+	Teléfono             varchar(100)  NOT NULL ,
+	Distrito             varchar(100)  NOT NULL ,
+	Correo               varchar(100)  NOT NULL ,
+	CONSTRAINT XPKCLIENTES PRIMARY KEY (DNI ASC)
+)
+go
+
+
+
+CREATE TABLE VENDEDOR
+( 
+	IdVendedor           integer IDENTITY ( 1,1 ) ,
+	Idtienda             integer  NOT NULL ,
+	Nombres              varchar(100)  NOT NULL ,
+	Apellidos            varchar(100)  NOT NULL ,
+	Teléfono             varchar(100)  NOT NULL ,
+	CONSTRAINT XPKVENDEDOR PRIMARY KEY (IdVendedor ASC),
+	CONSTRAINT FK_Vendedor_Tiendas FOREIGN KEY (Idtienda) REFERENCES TIENDAS(Idtienda)
+		ON DELETE NO ACTION
+		ON UPDATE NO ACTION
+)
+go
+
+
+
+CREATE TABLE VENTAS
+( 
+	Nº_BoletaFactura     varchar(100)  NOT NULL ,
+	DNI                  varchar(20)  NOT NULL ,
+	CódigoProducto       integer  NOT NULL ,
+	Cantidad             integer  NOT NULL ,
+	MontoTotal           money  NOT NULL ,
+	Fecha_de_Venta       datetime  NOT NULL ,
+	Idtienda             integer  NOT NULL ,
+	IdVendedor           integer  NOT NULL ,
+	CONSTRAINT XPKVENTAS PRIMARY KEY (Nº_BoletaFactura ASC),
+	CONSTRAINT FK_Ventas_Clientes FOREIGN KEY (DNI) REFERENCES CLIENTES(DNI)
+		ON DELETE NO ACTION
+		ON UPDATE NO ACTION,
+CONSTRAINT FK_Ventas_Tiendas FOREIGN KEY (Idtienda) REFERENCES TIENDAS(Idtienda)
+		ON DELETE NO ACTION
+		ON UPDATE NO ACTION,
+CONSTRAINT FK_Ventas_Productos FOREIGN KEY (CódigoProducto) REFERENCES PRODUCTOS(CódigoProducto)
+		ON DELETE NO ACTION
+		ON UPDATE NO ACTION,
+CONSTRAINT FK_Ventas_Vendedor FOREIGN KEY (IdVendedor) REFERENCES VENDEDOR(IdVendedor)
+		ON DELETE NO ACTION
+		ON UPDATE NO ACTION
+)
+go
+
+-- IMPLEMENTACIÓN DE DATOS DE PRUEBA
+
+USE TECNOHOME
+GO
+
+
+-- Tabla Productos
+
+SET IDENTITY_INSERT PRODUCTOS ON;
+GO
+
+INSERT INTO PRODUCTOS (CódigoProducto, Descripción,Categoría,Precio) VALUES
+(100001, 'SmartTV 32 pulg LG' , 'Smart TV' ,4999.00),
+(100002,'SmartTV 45 pulg LG', 'Smart TV',5999.00),
+(100003,'SmartTV 32 pulg Samsung', 'SmartTV',4499.00),
+(100004,'SmartTV 45 pulg Samsung', 'SmartTV',5499.00),
+(100005,'IPhone 11 128GB Apple', 'Celulares',2499.00),
+(100006,'IPhone 12 128GB Apple', 'Celulares',4499.00),
+(100007,'Notebook 14 pulg Lenovo', 'Laptop',1999.00),
+(100008,'Notebook 16 pulg Lenovo', 'Laptop',2499.00),
+(100009,'Notebook 14 pulg HP', 'Laptop',2999.00),
+(100010,'Notebook 16 pulg HP', 'Laptop',3499.00)
+GO
+
+SET IDENTITY_INSERT PRODUCTOS OFF;
+GO
+
+SELECT * 
+FROM PRODUCTOS
+
+
+-- Tabla Almacen
+
+SET IDENTITY_INSERT Almacen ON;
+GO
+
+INSERT INTO Almacen (Idalmacén,Distrito) VALUES
+(0001, 'Santiago de Surco'),
+(0002, 'San Isidro'),
+(0003, 'Santa Anita'),
+(0004, 'San Juan de Miraflores'),
+(0005, 'La Perla'),
+(0006, 'La Victoria'),
+(0007, 'Chorrillos'),
+(0008, 'San Miguel'),
+(0009, 'Ate'),
+(0010,'San Juan de Miraflores')
+GO
+
+SET IDENTITY_INSERT Almacen OFF
+GO
+
+SELECT *
+FROM Almacen
+
+
+--Tabla Clientes
+
+INSERT INTO CLIENTES (DNI,Nombres,Apellidos,Teléfono,Distrito,Correo) VALUES
+(77889966, 'Diego','Arguelles','993465783','Santiago de Surco','diegoargu@gmail.com'),
+(07884966, 'Pepe','Rodriguez','991288347','Surquillo','peperod@gmail.com'),
+(72895466, 'Juan','Pastor','912899043','Ate','juanpas@gmail.com'),
+(12389966, 'Laura','Quispe','909087453','San Borja','lauqui@gmail.com'),
+(92748839, 'Brenda','Guerrero','908909490','Santa Anita','brengue@gmail.com'),
+(92478889, 'Manuel','Tapia','999934009','Miraflores','manutap@gmail.com'),
+(12233477, 'Eliana','Flores','980812345','San Juan de Miraflores','eliflor@gmail.com'),
+(34883999, 'Eduardo','Cardenas','999873450','La Perla','educarde@gmail.com'),
+(89398492, 'Gabriela','Fernandez','900823454','San Miguel','gabyfer@gmail.com'),
+(94389849, 'Emma','Vesquez','987678904','La Molina','emmavas@gmail.com')
+GO
+
+SELECT *
+FROM CLIENTES
+
+
+--Tabla Tiendas
+
+SET IDENTITY_INSERT TIENDAS ON;
+
+INSERT INTO TIENDAS(Idtienda,Departamento,Provincia,Distrito) VALUES
+(1001,'Lima','Lima','Los Olivos'),
+(1002,'Lima','Lima','Magdalena del Mar'),
+(1003,'Lima','Lima','Chorrillos'),
+(1004,'Lima','Lima','Breña'),
+(1005,'Lima','Cañete','San Vicente de Cañete'),
+(1006,'Ica','Ica','Ica'),
+(1007,'Ica','Ica','Parcona'),
+(1008,'Arequipa','Arequipa','Paucarpata'),
+(1009,'Arequipa','Arequipa','La Joya'),
+(1010,'La Libertad','Trujillo','Trujillo');
+GO
+
+SET IDENTITY_INSERT TIENDAS OFF;
+
+SELECT * FROM TIENDAS;
+
+
+-- Tabla Vendedor
+
+SET IDENTITY_INSERT VENDEDOR ON;
+
+INSERT INTO VENDEDOR (IdVendedor,Idtienda,Nombres,Apellidos,Teléfono) VALUES
+(201,1001,'Barbara','Guerra','956858748'),
+(202,1006,'Virginia','Perelo','926523389'),
+(203,1010,'Florentino','Sandoval','926593348'),
+(204,1007,'Brigida','Guevara','992365102'),
+(205,1004,'Óscar','Belmonte','926593654'),
+(206,1002,'Blanca','Cortes','956985238'),
+(207,1008,'Adolfo','Granados','952021503'),
+(208,1005,'Humberto','Crespo','926023102'),
+(209,1009,'Esmeralda','Barcelo','923015027'),
+(210,1003,'Lourdes','Orellana','902623581');
+GO
+
+SET IDENTITY_INSERT VENDEDOR OFF;
+
+SELECT*FROM VENDEDOR
+
+-- Tabla InventarioTienda
+SET IDENTITY_INSERT INVENTARIOTIENDA ON;
+GO
+
+
+INSERT INTO INVENTARIOTIENDA(CódigoInventario, Idtienda,CódigoProducto,Idalmacén,Unidades,Fecha_ult_ingreso)VALUES
+(99001,1001,100001,0001,200,'2021/01/20'),
+(99002,1002,100002,0002,150,'2021/01/15'),
+(99003,1003,100003,0003,300,'2021/02/02'),
+(99004,1004,100004,0004,250,'2021/01/17'),
+(99005,1005,100005,0005,350,'2021/01/23'),
+(99006,1006,100006,0006,220,'2021/01/18'),
+(99007,1007,100007,0007,310,'2021/02/18'),
+(99008,1008,100008,0008,120,'2021/02/06'),
+(99009,1009,100009,0009,400,'2021/02/23'),
+(99010,1010,100010,0010,370,'2021/02/19')
+GO
+
+SET IDENTITY_INSERT INVENTARIOTIENDA OFF;
+GO
+SELECT*FROM INVENTARIOTIENDA
+
+-- Tabla Ventas
+
+INSERT INTO VENTAS(Nº_BoletaFactura,DNI,CódigoProducto,Cantidad,MontoTotal,Fecha_de_Venta,Idtienda,IdVendedor)VALUES
+(100002201,77889966,100001,5,5*4999.00,'2021/02/10',1001,201),
+(100002202,07884966,100002,3,3*5999.00,'2021/01/11',1002,202),
+(100002203,07884966,100003,1,1*4499.00,'2021/02/15',1003,203),
+(100002204,07884966,100004,6,6*5499.00,'2021/02/07',1004,204),
+(100002205,07884966,100005,8,8*2499.00,'2021/02/19',1005,205),
+(100002206,07884966,100006,2,2*4499.00,'2021/02/21',1006,206),
+(100002207,07884966,100007,8,8*1999.00,'2021/02/23',1007,207),
+(100002208,07884966,100008,4,4*2499.00,'2021/02/25',1008,208),
+(100002209,07884966,100009,3,3*2999.00,'2021/02/27',1009,209),
+(100002210,07884966,100010,3,3*3499.00,'2021/03/02',1010,210)
+GO
+
+SELECT*FROM VENTAS
+
+
+
+
+
+
+
