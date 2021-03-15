@@ -50,3 +50,19 @@ SELECT e.*, (sueldo + IIF(comision IS NULL,0,comision)) [total]
 FROM rh.dbo.empleado e;
 go
 
+
+-- Ejercicio 20
+/*
+Desarrollar una sentencia SELECT para consultar los empleados cuyos ingresos totales es
+menor a 8,000.00. Base de datos RH.
+*/
+
+-- De Nina Valladares Marccelo para todos:  02:19 PM
+
+SELECT 	E.idempleado [CODIGO],	E.apellido+' '+E.nombre [EMPLEADO],	E.sueldo [SUELDO],	ISNULL(E.comision,0) [COMISION],	E.sueldo + ISNULL(E.comision,0) [TOTAL],	IIF((sueldo + ISNULL(comision,0))<8000,'CUMPLE','NO CUMPLE') [ESTATUS]FROM RH.dbo.empleado EWHERE (E.sueldo + ISNULL(E.comision,0)) < 8000;
+go
+
+
+-- De Mercedes Desposorio para todos:  02:19 PM
+
+SELECT *FROM (SELECT e.*, (sueldo + COALESCE(comision,0)) [total]      FROM rh.dbo.empleado e) aWHERE a.total<8000;GO
