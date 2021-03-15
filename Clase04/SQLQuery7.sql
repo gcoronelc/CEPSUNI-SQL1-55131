@@ -41,19 +41,25 @@ un mes de enero. Base de datos RH.
 
 -- De Nina Valladares Marccelo para todos:  02:37 PM
 
-SELECT E.*FROM RH.dbo.empleado EWHERE MONTH(E.fecingreso)=1;
+SELECT E.*
+FROM RH.dbo.empleado E
+WHERE MONTH(E.fecingreso)=1;
 go
 
 
 -- De Diego Arguelles Beteta para todos:  02:38 PM
 
-SELECT * FROM RH.dbo.empleadoWHERE MONTH(fecingreso)=1;
+SELECT * 
+FROM RH.dbo.empleado
+WHERE MONTH(fecingreso)=1;
 go
 
 
 -- De Juan Carlos Flower Estrada para todos:  02:41 PM
 
-SELECT *FROM RH.dbo.empleadowhere fecingreso IN (select fecingreso from RH.dbo.empleado where MONTH(fecingreso) = 1);
+SELECT *
+FROM RH.dbo.empleado
+where fecingreso IN (select fecingreso from RH.dbo.empleado where MONTH(fecingreso) = 1);
 
 
 -- Ejercicio 22
@@ -64,12 +70,16 @@ Base de datos EDUCA.
 
 -- De Diego Arguelles Beteta para todos:  02:58 PM
 
-SELECT*FROM EDUCA.dbo.MATRICULAWHERE month(mat_fecha) = month(getdate());
+SELECT*
+FROM EDUCA.dbo.MATRICULA
+WHERE month(mat_fecha) = month(getdate());
 go
 
 -- De Nina Valladares Marccelo para todos:  03:01 PM
 
-SELECT *FROM EduTec.dbo.MATRICULAWHERE MONTH(FecMatricula)=(MONTH(GETDATE())-1) AND YEAR(FecMatricula)=YEAR(GETDATE());
+SELECT *
+FROM EduTec.dbo.MATRICULA
+WHERE MONTH(FecMatricula)=(MONTH(GETDATE())-1) AND YEAR(FecMatricula)=YEAR(GETDATE());
 go
 
 -- DATEADD
@@ -79,7 +89,9 @@ GO
 
 
 
-SELECT *FROM EduTec.dbo.MATRICULAWHERE MONTH(FecMatricula)=MONTH(DATEADD(MM,-1,GETDATE())) 
+SELECT *
+FROM EduTec.dbo.MATRICULA
+WHERE MONTH(FecMatricula)=MONTH(DATEADD(MM,-1,GETDATE())) 
 AND YEAR(FecMatricula)=YEAR(DATEADD(MM,-1,GETDATE()));
 go
 

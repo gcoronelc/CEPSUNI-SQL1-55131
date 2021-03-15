@@ -27,17 +27,32 @@ ventas. Debe incluir el sueldo y la comisión. Base de datos RH.
 */
 
 -- De Diego Arguelles Beteta para todos:  03:35 PM
-WITH TABLA_APOYO AS (SELECT SUM(sueldo) AS sueldo_total, SUM (comision) AS comision_total				FROM RH.dbo.empleado				WHERE iddepartamento=103)SELECT 	sueldo_total, 	comision_total, 	sueldo_total+comision_total AS planilla_totalFROM TABLA_APOYO;
+WITH 
+TABLA_APOYO AS (SELECT SUM(sueldo) AS sueldo_total, SUM (comision) AS comision_total
+				FROM RH.dbo.empleado
+				WHERE iddepartamento=103)
+SELECT 
+	sueldo_total, 
+	comision_total, 
+	sueldo_total+comision_total AS planilla_total
+FROM TABLA_APOYO;
 go
 
 
 -- De Nina Valladares Marccelo para todos:  03:35 PM
 
-SELECT SUM(E.sueldo + ISNULL(E.comision,0)) [IMPORTE]FROM RH.dbo.empleado EWHERE E.iddepartamento = (SELECT iddepartamento FROM RH.dbo.departamento WHERE UPPER(NOMBRE) = 'VENTAS');
+SELECT SUM(E.sueldo + ISNULL(E.comision,0)) [IMPORTE]
+FROM RH.dbo.empleado E
+WHERE E.iddepartamento = (SELECT iddepartamento FROM RH.dbo.departamento WHERE UPPER(NOMBRE) = 'VENTAS');
 go
 
 -- De Nina Valladares Marccelo para todos:  03:43 PM
-SELECT 	SUM(E.sueldo)[SUELDO TOTAL],	SUM(ISNULL(E.comision,0))[COMISION TOTAL],	SUM(E.sueldo + ISNULL(E.comision,0)) [IMPORTE]FROM RH.dbo.empleado EWHERE E.iddepartamento = (SELECT iddepartamento FROM RH.dbo.departamento WHERE UPPER(NOMBRE) = 'VENTAS');
+SELECT 
+	SUM(E.sueldo)[SUELDO TOTAL],
+	SUM(ISNULL(E.comision,0))[COMISION TOTAL],
+	SUM(E.sueldo + ISNULL(E.comision,0)) [IMPORTE]
+FROM RH.dbo.empleado E
+WHERE E.iddepartamento = (SELECT iddepartamento FROM RH.dbo.departamento WHERE UPPER(NOMBRE) = 'VENTAS');
 
 
 -- Ejercicio 2
@@ -48,7 +63,9 @@ departamento de ventas. Base de datos RH.
 
 -- De Nina Valladares Marccelo para todos:  03:45 PM
 
-SELECT MAX(E.sueldo)[SUELDO MAYOR], MIN(E.sueldo)[SUELDO MENOR]FROM RH.dbo.empleado EWHERE E.iddepartamento = (SELECT iddepartamento FROM RH.dbo.departamento WHERE UPPER(NOMBRE) = 'VENTAS');
+SELECT MAX(E.sueldo)[SUELDO MAYOR], MIN(E.sueldo)[SUELDO MENOR]
+FROM RH.dbo.empleado E
+WHERE E.iddepartamento = (SELECT iddepartamento FROM RH.dbo.departamento WHERE UPPER(NOMBRE) = 'VENTAS');
 go
 
 
@@ -60,7 +77,8 @@ Base de datos RH.
 
 -- De Nina Valladares Marccelo para todos:
 
-SELECT AVG(E.sueldo + ISNULL(E.comision,0)) [PROMEDIO]FROM RH.dbo.empleado E;
+SELECT AVG(E.sueldo + ISNULL(E.comision,0)) [PROMEDIO]
+FROM RH.dbo.empleado E;
 go
 
 
